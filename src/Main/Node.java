@@ -21,24 +21,18 @@ public class Node{
     }
     public void setMap(int[][] map){
         this.map = map;
+        this.space = getZeroPostion();
+    }
+
+    private int getZeroPostion(){
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
                 if(map[i][j] == 0){
-                    space = i*10+j;
-                    return;
+                    return i*10+j;
                 }
             }
         }
-    }
-
-    public class Pair{  //坐标类
-        public int x;
-        public int y;
-        public Pair(){}
-        public Pair(int x, int y){
-            this.x = x;
-            this.y = y;
-        }
+        return 0;
     }
 
     //无参构造
