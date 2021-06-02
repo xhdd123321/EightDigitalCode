@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Node{
     private int[][] map = new int[3][3];    // 当前九宫格
-    private final Pair space;     //空格位置
+    private int space;     //空格位置
     private Node parent;    //父节点
     private int depth;     //当前深度
 
@@ -24,8 +24,7 @@ public class Node{
         for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
                 if(map[i][j] == 0){
-                    space.x = i;
-                    space.y = j;
+                    space = i*10+j;
                     return;
                 }
             }
@@ -43,17 +42,13 @@ public class Node{
     }
 
     //无参构造
-    public Node(){
-        space = new Pair();
-    }
+    public Node(){}
 
-    public Node(int[][] map, Node parent, int depth, Pair space){
+    public Node(int[][] map, Node parent, int depth, int space){
         for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
-                this.map[i][j] = map[i][j];
-            }
+            System.arraycopy(map[i], 0, this.map[i], 0, 3);
         }
-        this.space = new Pair(space.x, space.y);
+        this.space = space;
         this.depth = depth;
         this.parent = parent;
     }
@@ -78,7 +73,7 @@ public class Node{
     private int getReverseNum(){
         int[] num = new int[9];
         int index = 0;
-        for(int curs[] : map){
+        for(int[] curs : map){
             for(int cur : curs){
                 num[index++] = cur;
             }
@@ -96,33 +91,25 @@ public class Node{
 
     //根据逆序数的关系判断是否可解
     public boolean isSolvable(Node target) {
-        int[] num = new int[9];
-        int index = 0;
-        for(int curs[] : map){
-            for(int cur : curs){
-                num[index++] = cur;
-            }
-        }
         //判断逆序数奇偶性是否相同
         return ((this.getReverseNum() + target.getReverseNum()) & 1) == 0;
     }
 
     //交换坐标space和a
-    public void swap(Pair a){
-        this.map[space.x][space.y] = this.map[a.x][a.y];
-        this.map[a.x][a.y] = 0;
-        this.space.x = a.x;
-        this.space.y = a.y;
+    public void swap(int a){
+        this.map[space/10][space%10] = this.map[a/10][a%10];
+        this.map[a/10][a%10] = 0;
+        this.space = a;
     }
 
     //移动规则：1上2右3下4左
     //判断能否移动
     public boolean couldMove(int direction){
         switch (direction){
-            case 1: return space.x - 1 >= 0;
-            case 2: return space.y + 1 < 3;
-            case 3: return space.x + 1 < 3;
-            case 4: return space.y - 1 >= 0;
+            case 1: return space/10 - 1 >= 0;
+            case 2: return space%10 + 1 < 3;
+            case 3: return space/10 + 1 < 3;
+            case 4: return space%10 - 1 >= 0;
         }
         return false;
     }
@@ -131,17 +118,17 @@ public class Node{
     public Node move(int direction) {
         Node temp = new Node(map, this, this.getDepth() + 1, this.space);
         switch (direction){
-            case 1: temp.swap(new Pair(this.space.x - 1, this.space.y));break;
-            case 2: temp.swap(new Pair(this.space.x, this.space.y + 1));break;
-            case 3: temp.swap(new Pair(this.space.x + 1, this.space.y));break;
-            case 4: temp.swap(new Pair(this.space.x, this.space.y - 1));break;
+            case 1: temp.swap(space - 10);break;
+            case 2: temp.swap(space + 1);break;
+            case 3: temp.swap(space + 10);break;
+            case 4: temp.swap(space - 1);break;
         }
         return temp;
     }
 
     //按九宫格格式输出
     public void print() {
-        for(int curs[] : map){
+        for(int[] curs : map){
             for (int cur : curs){
                 System.out.print(cur + " ");
             }
