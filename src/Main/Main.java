@@ -1,31 +1,58 @@
 package Main;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class Main
 {
-    public static void main(String[] agrs) {
-        test();     //测试
+    private int[][] startMap;
+    private int[][] endMap;
+    private int flag;
+
+    public Main(){
+        flag=0;
+        startMap=new int[3][3];
+        endMap=new int[3][3];
     }
 
-    private static void test(){
+    public void setFlag(String flag) {
+        if(flag=="1 宽度优先搜索算法"){
+            this.flag = 1;
+        }else if(flag=="2 深度优先搜索算法"){
+            this.flag=2;
+        }else if(flag=="3 A*搜索算法"){
+            this.flag=3;
+        }
+    }
+
+    public void setStartMap(int[][] startMap) {
+        this.startMap = startMap;
+    }
+    public void setEndMap(int[][] endMap) {
+        this.endMap = endMap;
+    }
+    public ArrayList<int[][]> test(){
         Algorithm Algorithm = new Algorithm();
-        int[][] startMap = {    {0,8,7},
-                                {6,5,4},
-                                {3,2,1}};
-
-        int[][] endMap = {      {1,2,3},
-                                {4,5,6},
-                                {7,8,0}};
-
         Node start = new Node();
         Node end = new Node();
         start.setMap(startMap);
         end.setMap(endMap);
         if(start.isSolvable(end)){
-            ArrayList<int[][]> res = Algorithm.bfs(start, end);
+            ArrayList<int[][]> res=new ArrayList<>();
+            if(flag==1){
+                res = Algorithm.bfs(start, end);
+                return res;
+            }else if(flag==2){
+                res = Algorithm.dfs(start, end);
+                return res;
+            }else if(flag==3){
+                res = Algorithm.Astar(start, end);
+                return res;
+            }
         }else{
+            JOptionPane.showMessageDialog(null,"Unsolvable, END!");
             System.out.println("Unsolvable, END!");
         }
+        return null;
     }
 }

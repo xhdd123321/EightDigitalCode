@@ -1,6 +1,9 @@
 package Main;
 
+
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.*;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -201,5 +204,40 @@ public class Node{
             this.depth = this.parent.getDepth()+1;
         }
         this.setEvaluation(this.getDepth()+this.getMisposition());
+    }
+    public int isContains(Deque<Node> open){
+        int i=0;
+        for (Node x : open) {
+            if(Algorithm.equal(x.getMap(), getMap())){
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+    public void operation(Deque<Node> open,Deque<Node> close,Node parent,Node target){
+        if(this.isContains(close)==-1){
+            int position=this.isContains(open);
+            if(position==-1){
+                this.parent = parent;
+                this.init(target);
+                open.add(this);
+            }else{
+                Node node = null;
+                int i=0;
+                for (Node x : open) {
+                    if(i==position){
+                        node=x;
+                    }
+                    i++;
+                }
+                if(this.getDepth() < node.getDepth()){
+                    open.remove(position);
+                    this.parent = parent;
+                    this.init(target);
+                    open.add(this);
+                }
+            }
+        }
     }
 }

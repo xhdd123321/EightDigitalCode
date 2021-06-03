@@ -3,21 +3,50 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class RightPanel extends JPanel {
     public final static int N = 3;
+    int[][] startMap;
+    int[][] endMap;
     Inputtxt Ts;
     Inputtxt Te;
     ButtonPanel Button;
+    ComboBoxPanel ComboBox;
+
     public RightPanel(){
-        setLayout(new GridLayout(3,1));
-        Ts=new Inputtxt("初始");
+        startMap=new int[3][3];
+        endMap=new int[3][3];
+        setLayout(new GridLayout(4,1));
+        Ts=new Inputtxt("初始状态");
         add(Ts);//将标签加入到面板上
-        Te=new Inputtxt("目标");
+        Te=new Inputtxt("目标状态");
         add(Te);//将标签加入到面板上
+        ComboBox=new ComboBoxPanel();
+        add(ComboBox);
         Button=new ButtonPanel();
         add(Button);
 
+    }
+    int[][] getstartMap(){
+        Button.getMap(startMap,Ts);
+        return startMap;
+    }
+    int[][] getendMap(){
+        Button.getMap(endMap,Te);
+        return endMap;
+    }
+    class ComboBoxPanel extends JPanel{
+        JComboBox sizeCombo;
+        public ComboBoxPanel(){
+            sizeCombo = new JComboBox();
+            sizeCombo.setEditable(false);
+            sizeCombo.addItem("1 宽度优先搜索算法");
+            sizeCombo.addItem("2 深度优先搜索算法");
+            sizeCombo.addItem("3 A*搜索算法");
+            add(sizeCombo);
+        }
     }
     class Inputtxt extends JPanel{
         String titel;
@@ -65,15 +94,30 @@ public class RightPanel extends JPanel {
     class ButtonPanel extends JPanel {
         JButton button1=new JButton("确认");
         JButton ExitButton=new JButton("退出");
+        void getMap(int[][] map,Inputtxt T){
+            int num;
+            num = Integer.parseInt(T.stext11.getText());
+            map[0][0]=num;
+            num = Integer.parseInt(T.stext12.getText());
+            map[0][1]=num;
+            num = Integer.parseInt(T.stext13.getText());
+            map[0][2]=num;
+            num = Integer.parseInt(T.stext21.getText());
+            map[1][0]=num;
+            num = Integer.parseInt(T.stext22.getText());
+            map[1][1]=num;
+            num = Integer.parseInt(T.stext23.getText());
+            map[1][2]=num;
+            num = Integer.parseInt(T.stext31.getText());
+            map[2][0]=num;
+            num = Integer.parseInt(T.stext32.getText());
+            map[2][1]=num;
+            num = Integer.parseInt(T.stext33.getText());
+            map[2][2]=num;
+        }
         public ButtonPanel(){
             add(button1);
-            button1.addActionListener(new ActionListener()
-            {
-                public void actionPerformed(ActionEvent event)
-                {
-
-                }
-            });
+            add(ExitButton);
             ExitButton.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent event)

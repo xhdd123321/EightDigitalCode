@@ -9,6 +9,24 @@ public class Algorithm {
     private Deque<Node> open = new LinkedList<>();       //open表
     private Deque<Node> close = new LinkedList<>();      //close表
 
+    //工具函数
+    public static boolean equal(final int[][] arr1, final int[][] arr2) {
+        if (arr1 == null) {
+            return (arr2 == null);
+        }
+        if (arr2 == null) {
+            return false;
+        }
+        if (arr1.length != arr2.length) {
+            return false;
+        }
+        for (int i = 0; i < arr1.length; i++) {
+            if (!Arrays.equals(arr1[i], arr2[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
     //宽度优先搜索算法
     public ArrayList<int[][]> bfs(Node start, Node end) {
         Node cur;  //当前节点
@@ -75,45 +93,42 @@ public class Algorithm {
             start.init(end);
             open.add(start);
             while(open.isEmpty() == false){
-                //自定义排序1
-                Collections.sort(open, new Comparator<Node>() {
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return o1.getEvaluation()-o2.getEvaluation();
-                    }
-                });
+                //open排序
+
                 Node best = open.getFirst();    //从open表中取出最小估值的状态并移除open表
-                open.remove();
+                open.removeFirst();
                 close.add(best);
-                if(best.isEnd(end)){
-                    //输出
-                    best.printRoute();
+                if(used.add(best.getCode())) {
+                    if (best.isEnd(end)) {//输出
+                        System.out.println("Success, the route is below:");
+                        return best.printRoute();
+                    }
                 }
                 int move;
                 //由best状态进行扩展并加入到open表中
                 //0的位置上移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
                 if(best.couldMove(1)){
-                    move = 0;
-                    Node up = best.moveUp(move);
-                    up.operation(open, close, best, target);
+                    move = 1;
+                    Node up = best.move(move);
+                    up.operation(open, close, best, end);
                 }
                 //0的位置下移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
                 if(best.couldMove(3)){
-                    move = 1;
-                    Node up = best.moveUp(move);
-                    up.operation(open, close, best, target);
+                    move = 3;
+                    Node up = best.move(move);
+                    up.operation(open, close, best, end);
                 }
                 //0的位置左移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
                 if(best.couldMove(4)){
-                    move = 2;
-                    Node up = best.moveUp(move);
-                    up.operation(open, close, best, target);
+                    move = 4;
+                    Node up = best.move(move);
+                    up.operation(open, close, best, end);
                 }
                 //0的位置右移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
                 if(best.couldMove(2)){
-                    move = 3;
-                    Node up = best.moveUp(move);
-                    up.operation(open, close, best, target);
+                    move = 2;
+                    Node up = best.move(move);
+                    up.operation(open, close, best, end);
                 }
             }
         }else
