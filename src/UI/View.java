@@ -2,6 +2,7 @@ package UI;
 
 import Main.*;
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -20,15 +21,17 @@ class MyFrame extends JFrame {
     public static LeftPanel panel3;
     //构造函数
     public MyFrame() {
+        setLayout(new BorderLayout(10,10));
         map=new ArrayList<>();
         Main code_8=new Main();
         setTitle("8数码");
-        setSize(600,360);
+        setSize(700,360);
         panel1=new RightPanel();
         add(panel1,"East");
         panel2=new CenterPanel();
-        add(panel2,"Center");
+        add(panel2,BorderLayout.CENTER);
         panel3=new LeftPanel();
+        add(panel3,"West");
         panel1.Button.button1.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent event)
@@ -39,6 +42,7 @@ class MyFrame extends JFrame {
                 code_8.setEndMap(getendMap());
                 setMap(code_8.test());
                 panel2.setMap(map);
+                panel3.setString("stepnum:"+map.size(),flag,code_8.getInformation(),"程序运行时间:"+code_8.getRuntime()+"ms");
             }
         });
     }

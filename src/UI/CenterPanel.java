@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.awt.Window.*;
 
 public class CenterPanel extends JPanel{
     private ArrayList<int[][]> map;
@@ -15,16 +16,17 @@ public class CenterPanel extends JPanel{
     Show show;
     ButtonPanel Button;
     public CenterPanel(){
+        setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         map=new ArrayList<>();
         index=0;
         if(map.isEmpty()){
             int[][] e={{1,2,3},{4,5,6},{7,8,0}};
             map.add(e);
         }
-        setSize(300,300);
+        setSize(200,300);
         setLayout(new BorderLayout());
         show=new Show();
-        add(show,"Center");
+        add(show,BorderLayout.CENTER);
         Button=new ButtonPanel();
         add(Button,"South");
     }
@@ -42,8 +44,7 @@ public class CenterPanel extends JPanel{
     public class Show extends JPanel{
         int[][] arr;
         public Show(){
-            setBackground(Color.WHITE);
-            setSize(300,300);
+            setLayout(new BorderLayout());
             arr=map.get(index++);
         }
         void setArr(int[][] res){

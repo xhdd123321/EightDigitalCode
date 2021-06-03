@@ -8,6 +8,8 @@ public class Algorithm {
     private HashSet<Integer> used= new HashSet<>();      //标记数组
     private Deque<Node> open = new LinkedList<>();       //open表
     private Deque<Node> close = new LinkedList<>();      //close表
+    private long runtime;
+    private String information;
 
     //工具函数
     public static boolean equal(final int[][] arr1, final int[][] arr2) {
@@ -27,12 +29,20 @@ public class Algorithm {
         }
         return true;
     }
+
+    public long getRuntime() {
+        return runtime;
+    }
+    public String getInformation(){
+        return information;
+    }
     //宽度优先搜索算法
     public ArrayList<int[][]> bfs(Node start, Node end) {
         Node cur;  //当前节点
         used.add(start.getCode());
         open.offerLast(start);
         nodeNum = 0;
+        long startTime=System.currentTimeMillis();   //获取开始时间
         while(!open.isEmpty()){
             close.add(open.peekFirst());
             cur = open.pollFirst();
@@ -42,7 +52,11 @@ public class Algorithm {
                     Node temp = cur.move(i);
                     if(used.add(temp.getCode())){
                         if(temp.isEnd(end)){
+                            information="nodeNum : " + nodeNum + "  depth : " + temp.getDepth();
                             System.out.println("Success, the route is below:");
+                            long endtime=System.currentTimeMillis(); //获取结束时间
+                            System.out.println("程序运行时间： "+(endtime-startTime)+"ms");
+                            runtime=endtime-startTime;
                             return temp.printRoute();
                         }else{
                             open.add(temp);
@@ -62,6 +76,7 @@ public class Algorithm {
         used.add(start.getCode());
         open.push(start);
         nodeNum = 0;
+        long startTime=System.currentTimeMillis();   //获取开始时间
         while(!open.isEmpty()){
             close.add(open.peekFirst());
             cur = open.peek();
@@ -72,7 +87,11 @@ public class Algorithm {
                     Node temp = cur.move(i);
                     if(used.add(temp.getCode())){
                         if(temp.isEnd(end)){
+                            information="nodeNum : " + nodeNum + "  depth : " + temp.getDepth();
+                            long endtime=System.currentTimeMillis(); //获取结束时间
                             System.out.println("Success, the route is below:");
+                            System.out.println("程序运行时间： "+(endtime-startTime)+"ms");
+                            runtime=endtime-startTime;
                             return temp.printRoute();
                         }else{
                             open.add(temp);
@@ -90,6 +109,7 @@ public class Algorithm {
         //TODO
         ArrayList<Node> open_a = new ArrayList<Node>();
         ArrayList<Node> close_a = new ArrayList<Node>();
+        long startTime=System.currentTimeMillis();   //获取开始时间
         if(start.isSolvable(end)){
             //初始化初始状态
             start.init(end);
@@ -102,7 +122,11 @@ public class Algorithm {
                 close_a.add(best);
                 if(used.add(best.getCode())) {
                     if (best.isEnd(end)) {//输出
+                        information="nodeNum : " + nodeNum + "  depth : " + best.getDepth();
                         System.out.println("Success, the route is below:");
+                        long endtime=System.currentTimeMillis(); //获取结束时间
+                        System.out.println("程序运行时间： "+(endtime-startTime)+"ms");
+                        runtime=endtime-startTime;
                         return best.printRoute();
                     }
                 }
