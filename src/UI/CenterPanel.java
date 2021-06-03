@@ -31,7 +31,12 @@ public class CenterPanel extends JPanel{
     void setMap(ArrayList<int[][]> res){
         index=0;
         map=res;
-        show.setarr(map.get(index++));
+        if(map==null){
+            map=new ArrayList<>();
+            int[][] e={{1,2,3},{4,5,6},{7,8,0}};
+            map.add(e);
+        }
+        show.setArr(map.get(index++));
         show.repaint();
     }
     public class Show extends JPanel{
@@ -41,7 +46,7 @@ public class CenterPanel extends JPanel{
             setSize(300,300);
             arr=map.get(index++);
         }
-        void setarr(int[][] res){
+        void setArr(int[][] res){
             arr=res;
         }
         void Repaint(){
@@ -97,7 +102,7 @@ public class CenterPanel extends JPanel{
                 public void actionPerformed(ActionEvent event)
                 {
                     if(index<map.size()){
-                        show.setarr(map.get(index++));
+                        show.setArr(map.get(index++));
                         show.Repaint();
                     }
                     else{

@@ -88,16 +88,18 @@ public class Algorithm {
     //A*搜索算法
     public ArrayList<int[][]> Astar(Node start, Node end){
         //TODO
+        ArrayList<Node> open_a = new ArrayList<Node>();
+        ArrayList<Node> close_a = new ArrayList<Node>();
         if(start.isSolvable(end)){
             //初始化初始状态
             start.init(end);
-            open.add(start);
-            while(open.isEmpty() == false){
+            open_a.add(start);
+            while(open_a.isEmpty() == false){
                 //open排序
-
-                Node best = open.getFirst();    //从open表中取出最小估值的状态并移除open表
-                open.removeFirst();
-                close.add(best);
+                Collections.sort(open_a);
+                Node best = open_a.get(0);    //从open表中取出最小估值的状态并移除open表
+                open_a.remove(0);
+                close_a.add(best);
                 if(used.add(best.getCode())) {
                     if (best.isEnd(end)) {//输出
                         System.out.println("Success, the route is below:");
@@ -110,25 +112,25 @@ public class Algorithm {
                 if(best.couldMove(1)){
                     move = 1;
                     Node up = best.move(move);
-                    up.operation(open, close, best, end);
+                    up.operation(open_a, close_a, best, end);
                 }
                 //0的位置下移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
                 if(best.couldMove(3)){
                     move = 3;
                     Node up = best.move(move);
-                    up.operation(open, close, best, end);
+                    up.operation(open_a, close_a, best, end);
                 }
                 //0的位置左移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
                 if(best.couldMove(4)){
                     move = 4;
                     Node up = best.move(move);
-                    up.operation(open, close, best, end);
+                    up.operation(open_a, close_a, best, end);
                 }
                 //0的位置右移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
                 if(best.couldMove(2)){
                     move = 2;
                     Node up = best.move(move);
-                    up.operation(open, close, best, end);
+                    up.operation(open_a, close_a, best, end);
                 }
             }
         }else
