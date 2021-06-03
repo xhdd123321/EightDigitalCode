@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Main
 {
-    /*private int[][] startMap;
+    private int[][] startMap;
     private int[][] endMap;
     private int flag;
 
@@ -23,8 +23,8 @@ public class Main
         }else if(flag=="3 A*搜索算法"){
             this.flag=3;
         }
-    }*/
-    public static void main(String[] agrs) {
+    }
+    /*public static void main(String[] agrs) {
         test();
     }
     private static void test() {
@@ -44,8 +44,8 @@ public class Main
         } else {
             System.out.println("Unsolvable, END!");
         }
-    }
-    /*public void setStartMap(int[][] startMap) {
+    }*/
+    public void setStartMap(int[][] startMap) {
         this.startMap = startMap;
     }
     public void setEndMap(int[][] endMap) {
@@ -74,5 +74,5 @@ public class Main
             System.out.println("Unsolvable, END!");
         }
         return null;
-    }*/
+    }
 }

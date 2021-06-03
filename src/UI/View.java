@@ -33,12 +33,12 @@ class MyFrame extends JFrame {
         {
             public void actionPerformed(ActionEvent event)
             {
-                /*String flag=(String) panel1.ComboBox.sizeCombo.getSelectedItem();
+                String flag=(String) panel1.ComboBox.sizeCombo.getSelectedItem();
                 code_8.setFlag(flag);
                 code_8.setStartMap(getstartMap());
                 code_8.setEndMap(getendMap());
                 setMap(code_8.test());
-                panel2.setMap(map);*/
+                panel2.setMap(map);
             }
         });
     }
