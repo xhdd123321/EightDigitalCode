@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class Node implements Comparable {
+public class Node {
     private int[][] map = new int[3][3];    // 当前九宫格
     private final Pair space;     //空格位置
     private Node parent;    //父节点
@@ -208,12 +208,6 @@ public class Node implements Comparable {
             temp = temp.getParent();
         }
         return route;
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        Node c = (Node) o;
-        return this.evaluation - c.getEvaluation();//默认排序为f(n)由小到大排序
     }
 
     //求f(n) = g(n)+h(n);初始化状态信息
