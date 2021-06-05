@@ -56,22 +56,19 @@ public class Main
         end.setMap(endMap);
         if(start.isSolvable(end)){
             ArrayList<int[][]> res=new ArrayList<>();
+            long startTime=System.currentTimeMillis();   //获取开始时间
             if(flag==1){
                 res = Algorithm.bfs(start, end);
-                setRuntime(Algorithm.getRuntime());
-                setInformation(Algorithm.getInformation());
-                return res;
             }else if(flag==2){
                 res = Algorithm.dfs(start, end);
-                setRuntime(Algorithm.getRuntime());
-                setInformation(Algorithm.getInformation());
-                return res;
             }else if(flag==3){
                 res = Algorithm.Astar(start, end);
-                setRuntime(Algorithm.getRuntime());
-                setInformation(Algorithm.getInformation());
-                return res;
             }
+            long endtime=System.currentTimeMillis(); //获取结束时间
+            setRuntime(endtime-startTime);
+            System.out.println("程序运行时间： "+(endtime-startTime)+"ms");
+            setInformation(Algorithm.getInformation());
+            return res;
         }else{
             JOptionPane.showMessageDialog(null,"Unsolvable, END!");
             System.out.println("Unsolvable, END!");

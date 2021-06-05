@@ -45,7 +45,7 @@ public class CenterPanel extends JPanel{
         int[][] arr;
         public Show(){
             setLayout(new BorderLayout());
-            arr=map.get(index++);
+            arr=map.get(index);
         }
         void setArr(int[][] res){
             arr=res;
@@ -96,13 +96,30 @@ public class CenterPanel extends JPanel{
     }
     class ButtonPanel extends JPanel {
         JButton button1=new JButton("下一步");
+        JButton button2=new JButton("上一步");
         public ButtonPanel(){
+            add(button2);
             add(button1);
+            button2.addActionListener(new ActionListener()
+            {
+                public void actionPerformed(ActionEvent event)
+                {
+                    if(index>1){
+                        index--;
+                        show.setArr(map.get(index-1));
+                        show.Repaint();
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null,"已到第一步");
+                    }
+                }
+            });
             button1.addActionListener(new ActionListener()
             {
                 public void actionPerformed(ActionEvent event)
                 {
                     if(index<map.size()){
+                        if(index==0) index++;
                         show.setArr(map.get(index++));
                         show.Repaint();
                     }

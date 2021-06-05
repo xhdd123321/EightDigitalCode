@@ -249,13 +249,25 @@ public class Node implements Comparable {
             if (position == -1) {
                 this.parent = parent;
                 this.init(target);
-                open.add(this);
+                int i;
+                for(i=0;i< open.size();i++){
+                    if(this.getEvaluation()<open.get(i).getEvaluation()){
+                        break;
+                    }
+                }
+                open.add(i,this);
             } else {
                 if (this.getDepth() < open.get(position).getDepth()) {
                     open.remove(position);
                     this.parent = parent;
                     this.init(target);
-                    open.add(this);
+                    int i;
+                    for(i=0;i< open.size();i++){
+                        if(this.getEvaluation()<open.get(i).getEvaluation()){
+                            break;
+                        }
+                    }
+                    open.add(i,this);
                 }
             }
         }

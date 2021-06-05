@@ -18,10 +18,12 @@ public class RightPanel extends JPanel {
     public RightPanel(){
         startMap=new int[3][3];
         endMap=new int[3][3];
+        String[][] smap={{"2","1","6"},{"4","0","8"},{"7","5","3"}};
+        String[][] emap={{"1","2","3"},{"8","0","4"},{"7","6","5"}};
         setLayout(new GridLayout(4,1));
-        Ts=new Inputtxt("初始状态");
+        Ts=new Inputtxt("初始状态",smap);
         add(Ts);//将标签加入到面板上
-        Te=new Inputtxt("目标状态");
+        Te=new Inputtxt("目标状态",emap);
         add(Te);//将标签加入到面板上
         ComboBox=new ComboBoxPanel();
         add(ComboBox);
@@ -60,34 +62,34 @@ public class RightPanel extends JPanel {
         private JTextField stext31;
         private JTextField stext32;
         private JTextField stext33;
-        public Inputtxt(String str){
+        public Inputtxt(String str,String[][] mmap){
             titel=str;
             setLayout(new BorderLayout());
             label=new JLabel(titel,JLabel.LEFT);
             add(label,"North");
             JPanel Map=new JPanel();
-            addtext1(Map);
+            addtext1(Map,mmap);
             add(Map,"Center");
         }
-        void addtext1(JPanel Map){//将文本域加入到面板上
+        void addtext1(JPanel Map,String[][] mmap){//将文本域加入到面板上
             Map.setLayout(new GridLayout(3,3));
-            stext11=new JTextField(2);
+            stext11=new JTextField(mmap[0][0],2);
             Map.add(stext11);
-            stext12=new JTextField(2);
+            stext12=new JTextField(mmap[0][1],2);
             Map.add(stext12);
-            stext13=new JTextField(2);
+            stext13=new JTextField(mmap[0][2],2);
             Map.add(stext13);
-            stext21=new JTextField(2);
+            stext21=new JTextField(mmap[1][0],2);
             Map.add(stext21);
-            stext22=new JTextField(2);
+            stext22=new JTextField(mmap[1][1],2);
             Map.add(stext22);
-            stext23=new JTextField(2);
+            stext23=new JTextField(mmap[1][2],2);
             Map.add(stext23);
-            stext31=new JTextField(2);
+            stext31=new JTextField(mmap[2][0],2);
             Map.add(stext31);
-            stext32=new JTextField(2);
+            stext32=new JTextField(mmap[2][1],2);
             Map.add(stext32);
-            stext33=new JTextField(2);
+            stext33=new JTextField(mmap[2][2],2);
             Map.add(stext33);
         }
     }

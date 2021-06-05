@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="EightDigitalCode:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EightDigitalCode_jar</output-path>
+    <root id="archive" name="EightDigitalCode.jar">
+      <element id="module-output" name="EightDigitalCode" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/picture" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/picture/0.png" />
+    </root>
+  </artifact>
+</component>
