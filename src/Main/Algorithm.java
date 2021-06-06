@@ -117,31 +117,13 @@ public class Algorithm {
                         return best.printRoute();
                     }
                 }
-                int move;
                 //由best状态进行扩展并加入到open表中
-                //0的位置上移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
-                if(best.couldMove(1)){
-                    move = 1;
-                    Node up = best.move(move);
-                    up.operation(open_a, close_a, best, end);
-                }
-                //0的位置下移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
-                if(best.couldMove(3)){
-                    move = 3;
-                    Node up = best.move(move);
-                    up.operation(open_a, close_a, best, end);
-                }
-                //0的位置左移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
-                if(best.couldMove(4)){
-                    move = 4;
-                    Node up = best.move(move);
-                    up.operation(open_a, close_a, best, end);
-                }
-                //0的位置右移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
-                if(best.couldMove(2)){
-                    move = 2;
-                    Node up = best.move(move);
-                    up.operation(open_a, close_a, best, end);
+                //0的位置移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
+                for(int i = 1; i <= 4; i++){
+                    if(best.couldMove(i)){
+                        Node up = best.move(i);
+                        up.operation(open_a, close_a, best, end);
+                    }
                 }
             }
         }else
