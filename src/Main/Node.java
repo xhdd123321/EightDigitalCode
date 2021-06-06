@@ -12,8 +12,7 @@ public class Node {
     private final Pair space;     //空格位置
     private Node parent;    //父节点
     private int depth;     //当前深度
-    private int evaluation;     //从起始状态到目标的最小估计值
-    private int misposition;    //到目标的最小估计
+    private int Fvalue;     //f(n) = g(n)+h(n)
 
     public int getDepth() {
         return this.depth;
@@ -35,6 +34,10 @@ public class Node {
         return map;
     }
 
+    public int getFvalue() {
+        return Fvalue;
+    }
+
     public void setMap(int[][] map) {
         this.map = map;
         for (int i = 0; i < 3; i++) {
@@ -46,22 +49,6 @@ public class Node {
                 }
             }
         }
-    }
-
-    public int getEvaluation() {
-        return evaluation;
-    }
-
-    public void setEvaluation(int evaluation) {
-        this.evaluation = evaluation;
-    }
-
-    public int getMisposition() {
-        return misposition;
-    }
-
-    public void setMisposition(int misposition) {
-        this.misposition = misposition;
     }
 
     public class Pair {  //坐标类
@@ -210,60 +197,22 @@ public class Node {
         return route;
     }
 
-    //求f(n) = g(n)+h(n);初始化状态信息
-    public void init(Node target) {
-        int temp = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (map[i][j] != target.getMap()[i][j])
-                    temp++;
+    //计算f(n) = g(n)+h(n)
+    public void countFValue(Node end) {
+        int step = 0;
+        int[] endstate = new int[9];
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                endstate[end.getMap()[i][j]] = i*10+j;
             }
         }
-        this.setMisposition(temp);
-        if (this.getParent() == null) {
-            this.setDepth(0);
-        } else {
-            this.depth = this.parent.getDepth() + 1;
-        }
-        this.setEvaluation(this.getDepth() + this.getMisposition());
-    }
-
-    public int isContains(ArrayList<Node> open){
-        for(int i=0;i<open.size();i++){
-            if(Algorithm.equal(open.get(i).getMap(), getMap())){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    public void operation(ArrayList<Node> open, ArrayList<Node> close, Node parent, Node target) {
-        if (this.isContains(close) == -1) {
-            int position = this.isContains(open);
-            if (position == -1) {
-                this.parent = parent;
-                this.init(target);
-                int i;
-                for(i=0;i< open.size();i++){
-                    if(this.getEvaluation()<open.get(i).getEvaluation()){
-                        break;
-                    }
-                }
-                open.add(i,this);
-            } else {
-                if (this.getDepth() < open.get(position).getDepth()) {
-                    open.remove(position);
-                    this.parent = parent;
-                    this.init(target);
-                    int i;
-                    for(i=0;i< open.size();i++){
-                        if(this.getEvaluation()<open.get(i).getEvaluation()){
-                            break;
-                        }
-                    }
-                    open.add(i,this);
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                if(map[i][j] != 0){
+                    step += Math.abs(endstate[map[i][j]]/10 - i) + Math.abs(endstate[map[i][j]]%10 - j);
                 }
             }
         }
+        Fvalue = step + depth;
     }
 }

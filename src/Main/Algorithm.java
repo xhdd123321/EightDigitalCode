@@ -10,25 +10,6 @@ public class Algorithm {
     private Deque<Node> close = new LinkedList<>();      //close表
     private String information;
 
-    //工具函数
-    public static boolean equal(final int[][] arr1, final int[][] arr2) {
-        if (arr1 == null) {
-            return (arr2 == null);
-        }
-        if (arr2 == null) {
-            return false;
-        }
-        if (arr1.length != arr2.length) {
-            return false;
-        }
-        for (int i = 0; i < arr1.length; i++) {
-            if (!Arrays.equals(arr1[i], arr2[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public String getInformation(){
         return information;
     }
@@ -49,7 +30,6 @@ public class Algorithm {
                         if(temp.isEnd(end)){
                             information="nodeNum : " + nodeNum + "  depth : " + temp.getDepth();
                             System.out.println("Success, the route is below:");
-                            long endtime=System.currentTimeMillis(); //获取结束时间
                             return temp.printRoute();
                         }else{
                             open.add(temp);
@@ -67,12 +47,11 @@ public class Algorithm {
         //TODO
         Node cur;
         used.add(start.getCode());
-        open.push(start);
+        open.offerFirst(start);
         nodeNum = 0;
         while(!open.isEmpty()){
             close.add(open.peekFirst());
-            cur = open.peek();
-            open.pop();
+            cur = open.pollFirst();
             for(int i = 1; i <= 4; i++){    //遍历四个方向
                 if(cur.couldMove(i)){   //判断能否移动
                     Node temp = cur.move(i);
@@ -83,7 +62,7 @@ public class Algorithm {
                             System.out.println("Success, the route is below:");
                             return temp.printRoute();
                         }else{
-                            open.add(temp);
+                            open.offerFirst(temp);
                         }
                     }
                 }
@@ -94,40 +73,44 @@ public class Algorithm {
     }
 
     //A*搜索算法
-    public ArrayList<int[][]> Astar(Node start, Node end){
-        //TODO
-        ArrayList<Node> open_a = new ArrayList<Node>();
-        ArrayList<Node> close_a = new ArrayList<Node>();
-
-        if(start.isSolvable(end)){
-            //初始化初始状态
-            start.init(end);
-            open_a.add(start);
-            nodeNum=0;
-            while(open_a.isEmpty() == false){
-                //open排序
-                Node best = open_a.get(0);    //从open表中取出最小估值的状态并移除open表
-                open_a.remove(0);
-                close_a.add(best);
-                nodeNum++;
-                if(used.add(best.getCode())) {
-                    if (best.isEnd(end)) {//输出
-                        information="nodeNum : " + nodeNum + "  depth : " + best.getDepth();
-                        System.out.println("Success, the route is below:");
-                        return best.printRoute();
-                    }
-                }
-                //由best状态进行扩展并加入到open表中
-                //0的位置移之后状态不在close和open中设定best为其父状态，并初始化f(n)估值函数
-                for(int i = 1; i <= 4; i++){
-                    if(best.couldMove(i)){
-                        Node up = best.move(i);
-                        up.operation(open_a, close_a, best, end);
+    public ArrayList<int[][]> Astar(Node start, Node end) {
+        ArrayList<Node> sonsOfN = new ArrayList<Node>();
+        ArrayList<Node> open = new ArrayList<>();       //open表
+        ArrayList<Node> close = new ArrayList<>();      //close表
+        Node cur;
+        used.add(start.getCode());
+        open.add(start);
+        nodeNum = 0;
+        while(!open.isEmpty()) {
+            close.add(open.get(0));
+            used.add(open.get(0).getCode());//将CLOSE表中元素仍入哈希表
+            cur = open.remove(0);
+            //判断节点N能否扩展 并把扩展后的节点放入OPEN表
+            for (int i = 1; i <= 4; i++) {
+                if (cur.couldMove(i)) {
+                    Node temp = cur.move(i);
+                    nodeNum++;
+                    if (!used.contains(temp.getCode())) {//如果不在CLOSE中
+                        if (temp.isEnd(end)) {
+                            information="nodeNum : " + nodeNum + "  depth : " + temp.getDepth();
+                            System.out.println("Success, the route is below:");
+                            return temp.printRoute();
+                        } else {
+                            temp.countFValue(end);
+                            sonsOfN.add(temp);
+                        }
                     }
                 }
             }
-        }else
-            System.out.println("没有解，请重新输入。");
+            //若有节点，则放入OPEN表中
+            if (sonsOfN.size() >= 1) {
+                open.addAll(sonsOfN);
+                sonsOfN.clear();
+            }
+            //对OPEN表排序
+            Collections.sort(open, (x,y)-> x.getFvalue() - y.getFvalue());
+        }
+        System.out.println("Open is empty,failed");
         return null;
     }
 }
